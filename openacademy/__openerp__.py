@@ -32,6 +32,7 @@
         'view/openacademy_wizard_view.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
+        'reports/reports.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
