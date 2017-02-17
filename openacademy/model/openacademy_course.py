@@ -32,7 +32,8 @@ class Course(models.Model):
     @api.multi
     def copy(self, default=None):
         default = dict(default or {})
-
+        if default is None:
+            default = {}
         copied_count = self.search_count(
             [('name', '=like', _(u"Copy of {}%").format(self.name))])
         if not copied_count:
