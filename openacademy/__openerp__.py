@@ -29,11 +29,11 @@
         'view/openacademy_session_view.xml',
         'view/partner_view.xml',
         'view/openacademy_session_workflow.xml',
-        'view/openacademy_wizard_view.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
         'reports/reports.xml',
         'view/openacademy_session_board.xml',
+        'view/openacademy_wizard_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
