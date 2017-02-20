@@ -50,10 +50,10 @@ class GlobalTestOpenAcademyCourse(TransactionCase):
 
 #     @mute_logger('openerp.sql_db')
 #     def test_20_two_courses_same_name(self):
-        '''
-        Test to create two courses with same name.
-        To raise constraint of unique name.
-        '''
+#        '''
+#        Test to create two courses with same name.
+#        To raise constraint of unique name.
+#        '''
 #        new_id = self.create_course('test_name', 'test_description', None)
 #        print "new_id", new_id
 #        with self.assertRaisesRegexp(
