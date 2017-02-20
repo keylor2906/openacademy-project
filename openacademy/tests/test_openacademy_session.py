@@ -1,7 +1,11 @@
 # -*- encoding: utf-8 -*-
 
+from psycopg2 import IntegrityError
+
 from openerp.tests.common import TransactionCase
 from openerp.exceptions import ValidationError
+# from openerp.tools import mute_logger
+
 
 class GlobalTestOpenAcademySession(TransactionCase):
     '''
@@ -27,7 +31,7 @@ class GlobalTestOpenAcademySession(TransactionCase):
         with self.assertRaisesRegexp(
                 ValidationError,
                 "A session's instructor can't be an attendee"
-            ):
+                ):
             self.session.create({
                 'name': 'Session test 1',
                 'seats': 1,
@@ -41,19 +45,37 @@ class GlobalTestOpenAcademySession(TransactionCase):
         Checks that the workflow works fine!
         '''
         session_test = self.session.create({
-                'name': 'Session test 1',
-                'seats': 10,
-                'course_id': 1,
-                'instructor_id': self.partner_vauxoo,
-                'attendee_ids': [(6, 0, [self.partner_attendee])],
+            'name': 'Session test 1',
+            'seats': 10,
+            'course_id': 1,
+            'instructor_id': self.partner_vauxoo,
+            'attendee_ids': [(6, 0, [self.partner_attendee])],
             })
         # Check inital state
-        self.assertEqual(session_test.state, 'draft', 'Initial state should be on draft')
+        self.assertEqual(session_test.state, 'draft',
+                         'Initial state should be on draft')
         session_test.signal_workflow('confirm')
 
         # Check next tate and check it
-        self.assertEqual(session_test.state, 'confirmed', 'State should be on confirmed')
+        self.assertEqual(session_test.state, 'confirmed',
+                         'State should be on confirmed')
         session_test.signal_workflow('done')
 
-        # Check next tate and check it 
+        # Check next tate and check it
         self.assertEqual(session_test.state, 'done', 'State should be on done')
+
+    def INACTIVE_test_30_sessions_without_course(self):
+        '''
+        Checks that a session needs to be assigned to a course.
+        '''
+        # @mute_logger('openerp.sql_db')
+        with self.assertRaisesRegexp(
+                IntegrityError,
+                'null value in column "course_id" violates not-null constraint'
+                ):
+            self.session.create({
+                'name': 'Session test 1',
+                'seats': 10,
+                'instructor_id': self.partner_vauxoo,
+                'attendee_ids': [(6, 0, [self.partner_attendee])],
+            })
