@@ -1,8 +1,8 @@
-from openerp import api, fields, models, _
-
 '''
 This module is to create model of Course
 '''
+from openerp import api, fields, models, _
+
 
 class Course(models.Model):
     '''
